@@ -1,0 +1,7 @@
+language: node_js # uhhh yeah, we'll do what we can via shell/gulp since Unity isn't supported :)
+node_js:
+  - "node" # latest
+
+sudo: false
+
+script: npm run gulp ci

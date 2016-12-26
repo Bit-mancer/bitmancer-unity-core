@@ -22,6 +22,9 @@ const paths = {
 
 
 gulp.task( 'lint', () => {
+    // Check for annoying mixed-tabs-spaces issue that can occur in MonoDevelop (because the generated solution
+    // will use the default MD configuration, and the user has to remember to change it when moving to a new
+    // machine, re-generating the solution, etc.)
     return gulp.src( paths.source )
         .pipe( indents( {
             type: 'spaces',
@@ -58,6 +61,7 @@ gulp.task( 'export-packages', () => {
 
 
 // Preflight check -- run before pushing commits, filing a PR, etc.
-gulp.task( 'preflight', ['lint'] );
+gulp.task( 'preflight', ['lint'] ); // TODO tests (if we can run them outside of Unity env), coverage, docs
 
+gulp.task( 'ci', ['preflight'] ); // this is what continuous integration (e.g. Travis) runs
 gulp.task( 'build', ['preflight', 'export-packages'] );
