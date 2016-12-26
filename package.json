@@ -1,0 +1,21 @@
+{
+  "name": "bitmancer-unity-core",
+  "version": "0.0.0",
+  "description": "Building block for Unity projects",
+  "private": true,
+  "author": "Mike Post",
+  "license": "MIT",
+  "scripts": {
+    "start": "echo \"Error: no start action specified\" && exit 1",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "gulp": "gulp"
+  },
+  "files": [],
+  "devDependencies": {
+    "del": "^2.2.2",
+    "exec-chainable": "0.0.3",
+    "gulp": "^3.9.1",
+    "gulp-cli": "^1.2.2",
+    "gulp-indent-checker": "^0.2.1"
+  }
+}
