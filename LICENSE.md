@@ -43,3 +43,13 @@ URL: http://wiki.unity3d.com/index.php?title=3DText
 License: CC-BY-SA 3.0
 License Source: http://creativecommons.org/licenses/by-sa/3.0/
 ```
+
+```
+Asset: Assets/External Assets/bitmancer.me/Core Assets/Scripts/UI/SubtitlesForAudioSource.cs
+Author: Lindsey Bieda
+URL: https://github.com/LindseyB/Windows/blob/master/Assets/Scripts/Subtitles.cs
+License: Public Domain
+License Source: https://github.com/LindseyB/Windows/blob/master/LICENSE
+
+This asset has been modified.
+```
