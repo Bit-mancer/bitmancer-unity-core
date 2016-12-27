@@ -46,3 +46,8 @@ ExportedObj/
 
 # Builds
 /_output
+
+# Generated files
+/Assets/External Assets/bitmancer.me/Core Assets/LICENSE.md*
+/Assets/External Assets/bitmancer.me/Core Assets/README.md*
+/Assets/External Assets/bitmancer.me/Core Assets/VERSION*
