@@ -21,3 +21,25 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+
+## Third-Party Assets
+
+This application bundles the following third-party assets in accordance
+with the following licenses:
+
+```
+Asset: Assets/External Assets/bitmancer.me/Core Assets/Scripts/Shaders/3DText.shader
+Author: Eric Haines
+URL: http://wiki.unity3d.com/index.php?title=3DText
+License: CC-BY-SA 3.0
+License Source: http://creativecommons.org/licenses/by-sa/3.0/
+```
+
+```
+Asset: Assets/External Assets/bitmancer.me/Core Assets/Scripts/Shaders/3DTextOneSided.shader
+Author: Eric Haines
+URL: http://wiki.unity3d.com/index.php?title=3DText
+License: CC-BY-SA 3.0
+License Source: http://creativecommons.org/licenses/by-sa/3.0/
+```
