@@ -13,7 +13,8 @@ namespace Bitmancer.Core.Particles {
     /// Drives an attached <c>ParticleSystem</c> at realtime. Useful for particle systems in main menus (when the game is likely paused via timeScale = 0).
     /// </remarks>
     [DisallowMultipleComponent]
-    public sealed class TimeScaleIndependentParticleSystem : BaseBehavior {
+    [RequireComponent( typeof(ParticleSystem) )]
+    public sealed class UnscaledTimeParticleSystem : BaseBehavior {
 
         private ParticleSystem _system;
         private float _lastTime;
