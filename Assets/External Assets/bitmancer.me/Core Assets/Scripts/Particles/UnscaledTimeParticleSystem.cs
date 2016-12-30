@@ -17,7 +17,6 @@ namespace Bitmancer.Core.Particles {
     public sealed class UnscaledTimeParticleSystem : BaseBehavior {
 
         private ParticleSystem _system;
-        private float _lastTime;
 
 
         /**
@@ -36,15 +35,8 @@ namespace Bitmancer.Core.Particles {
         }
 
 
-        void Start() {
-            _lastTime = Time.realtimeSinceStartup;
-        }
-
-
         void Update() {
-            float newTime = Time.realtimeSinceStartup;
-            _system.Simulate( newTime - _lastTime, true, false );
-            _lastTime = newTime;
+            _system.Simulate( Time.unscaledDeltaTime, true, false );
         }
     }
 }
