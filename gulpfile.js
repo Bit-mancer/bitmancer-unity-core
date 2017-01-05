@@ -11,7 +11,7 @@ const pkg = require( './package.json' );
 
 const paths = {
     unityApp: process.env.UNITY_APP_PATH || '/Applications/Unity/Unity.app/Contents/MacOS/Unity',
-    source: [ './Assets/**/*.cs' ], // gulp should handle this on Windows
+    source: [ './Assets/**/*.cs', './Assets/**/*.shader', '!./Assets/Standard Assets/**/*' ], // gulp should handle these path styles on Windows
     versionFile: path.join( 'Assets', 'External Assets', 'bitmancer.me', 'Core Assets', 'VERSION' ),
     packageRoot: path.join( 'Assets', 'External Assets', 'bitmancer.me', 'Core Assets' ),
     outputPath: '_output',
