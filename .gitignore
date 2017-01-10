@@ -44,6 +44,9 @@ ExportedObj/
 # Standard Assets
 /Assets/Standard Assets*
 
+# Private Assets
+/Assets/External Assets/bitmancer.me/Private Assets*
+
 # Placeholder assets
 /Assets/**/_PLACEHOLDER*
 
