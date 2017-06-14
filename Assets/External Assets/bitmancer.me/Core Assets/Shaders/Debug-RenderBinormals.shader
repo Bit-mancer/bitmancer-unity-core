@@ -28,7 +28,7 @@ Shader "| Debug/Render Binormals" {
             
             v2f vert( appdata v ) {
                 v2f o;
-                o.pos = mul( UNITY_MATRIX_MVP, v.vertex );
+                o.pos = UnityObjectToClipPos( v.vertex );
                 // calculate binormal
                 float3 binormal = cross( v.normal, v.tangent.xyz ) * v.tangent.w;
                 o.color.xyz = binormal * 0.5 + 0.5;
