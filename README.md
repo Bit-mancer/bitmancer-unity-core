@@ -16,5 +16,5 @@ A collection of scripts (and some assets) that I use as a building block for my 
 [contributing-image]: https://img.shields.io/badge/contributing-CoC-blue.svg
 [contributing-url]: CONTRIBUTING.md
 
-[travis-image]: https://travis-ci.org/Bit-mancer/bitmancer-unity-core.svg?branch=master
-[travis-url]: https://travis-ci.org/Bit-mancer/bitmancer-unity-core
+[travis-image]: https://travis-ci.org/bit-mancer/bitmancer-unity-core.svg?branch=master
+[travis-url]: https://travis-ci.org/bit-mancer/bitmancer-unity-core
