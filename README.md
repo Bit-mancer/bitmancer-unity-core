@@ -4,6 +4,8 @@
 [![Contributor Code of Conduct][contributing-image]][contributing-url]
 [![Build Status][travis-image]][travis-url]
 
+_work-in-progress -- no releases_
+
 A collection of scripts (and some assets) that I use as a building block for my Unity projects, now packaged up and open-sourced.
 
 
