@@ -1,14 +1,14 @@
 {
   "name": "bitmancer-unity-core",
   "version": "0.0.0",
-  "description": "Building block for Unity projects",
+  "description": "Building block for Unity projects.",
   "private": true,
-  "author": "Mike Post",
+  "author": "Mike Post <mike@bitmancer.me>",
   "license": "MIT",
   "scripts": {
     "start": "echo \"Error: no start action specified\" && exit 1",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "gulp": "gulp"
+    "task": "gulp"
   },
   "files": [],
   "devDependencies": {

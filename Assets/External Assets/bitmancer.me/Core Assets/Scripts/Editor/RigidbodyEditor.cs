@@ -117,7 +117,7 @@ namespace Bitmancer.Core.Editor {
 
         void OnSceneGUI() {
             Handles.color = Color.yellow;
-            Handles.SphereCap( 1, target.transform.TransformPoint( target.centerOfMass ), target.rotation, 0.2f );
+            Handles.SphereHandleCap( 1, target.transform.TransformPoint( target.centerOfMass ), target.rotation, 0.2f, Event.current.type );
         }
     }
 }
