@@ -33,6 +33,52 @@ gulp.task( 'lint', () => {
 });
 
 
+gulp.task( 'build-libraries', () => {
+
+    const projectPath = __dirname;
+    const projectFilePath = path.join( projectPath, 'Assembly-CSharp.csproj' );
+    const editorProjectFilePath = path.join( projectPath, 'Assembly-CSharp-Editor.csproj' );
+
+    const tempProjectFilename = '_BitmancerUnityCore_build.csproj';
+    const tempProjectFilePath = path.join( projectPath, tempProjectFilename );
+    const tempEditorProjectFilePath = path.join( projectPath, '_BitmancerUnityCore-Editor_build.csproj' );
+
+    const outputPath = path.join( projectPath, paths.outputPath );
+    const debugPath = path.join( outputPath, 'bin', 'Debug' );
+    const releasePath = path.join( outputPath, 'bin', 'Release' );
+
+    const assemblyName = 'BitmancerUnityCore';
+    const editorAssemblyName = 'BitmancerUnityCore-Editor';
+
+    return exec(
+        `/bin/mkdir -p "${outputPath}"`
+    ).then( () => {
+        return del( [ path.join( outputPath, '*.dll' ), path.join( outputPath, '*.mdb' ), path.join( outputPath, 'bin' ) ] );
+    }).then( () => {
+        return exec( `/usr/bin/sed "s/<AssemblyName>Assembly-CSharp<\\/AssemblyName>/<AssemblyName>${assemblyName}<\\/AssemblyName>/;s/<OutputPath>Temp[\\]bin[\\]Debug[\\]<\\/OutputPath>/<OutputPath>_output\\\\\\bin\\\\\\Debug\\\\\\<\\/OutputPath>\\\r\\\n\\\t<AssemblyName>${assemblyName}_d<\\/AssemblyName>/;s/<OutputPath>Temp[\\]bin[\\]Release[\\]<\\/OutputPath>/<OutputPath>_output\\\\\\bin\\\\\\Release\\\\\\<\\/OutputPath>/;s/<BaseDirectory>Assets<\\/BaseDirectory>/<BaseDirectory>Assets<\\/BaseDirectory>\\\r\\\n\\\t<ReleaseVersion>${pkg.version}<\\/ReleaseVersion>\\\r\\\n\\\t<SynchReleaseVersion>false<\\/SynchReleaseVersion>/" "${projectFilePath}" > "${tempProjectFilePath}"` );
+    }).then( () => {
+        return exec( `/usr/bin/sed "s/<AssemblyName>Assembly-CSharp-Editor<\\/AssemblyName>/<AssemblyName>${editorAssemblyName}<\\/AssemblyName>/;s/Include=\\\"Assembly-CSharp.csproj\\\"/Include=\\\"${tempProjectFilename}\\\"/;s/<Name>Assembly-CSharp<\\/Name>/<Name>${assemblyName}<\\/Name>/;s/<OutputPath>Temp[\\]bin[\\]Debug[\\]<\\/OutputPath>/<OutputPath>_output\\\\\\bin\\\\\\Debug\\\\\\<\\/OutputPath>\\\r\\\n\\\t<AssemblyName>${editorAssemblyName}_d<\\/AssemblyName>/;s/<OutputPath>Temp[\\]bin[\\]Release[\\]<\\/OutputPath>/<OutputPath>_output\\\\\\bin\\\\\\Release\\\\\\<\\/OutputPath>/;s/<BaseDirectory>Assets<\\/BaseDirectory>/<BaseDirectory>Assets<\\/BaseDirectory>\\\r\\\n\\\t<ReleaseVersion>${pkg.version}<\\/ReleaseVersion>\\\r\\\n\\\t<SynchReleaseVersion>false<\\/SynchReleaseVersion>/" "${editorProjectFilePath}" > "${tempEditorProjectFilePath}"` );
+    }).then( () => {
+        return exec( `xbuild /p:Configuration=Debug ${tempProjectFilePath}` );
+    }).then( () => {
+        return exec( `xbuild /p:Configuration=Release ${tempProjectFilePath}` );
+    }).then( () => {
+        return exec( `xbuild /p:Configuration=Debug ${tempEditorProjectFilePath}` );
+    }).then( () => {
+        return exec( `xbuild /p:Configuration=Release ${tempEditorProjectFilePath}` );
+    }).then( () => {
+        return exec( `/bin/cp "${path.join( releasePath, assemblyName )}"*.dll* "${outputPath}"` );
+    }).then( () => {
+        return exec( `/bin/cp "${path.join( debugPath, assemblyName )}"*.dll* "${outputPath}"` );
+    }).then( () => {
+        return del( [ path.join( outputPath, 'bin' ), tempProjectFilePath, tempEditorProjectFilePath ] );
+    }).catch( err => {
+        console.error( `\n*** BUILD ERROR ***\n\n${err}` );
+        process.exit( 1 );
+    });
+});
+
+
 gulp.task( 'export-packages', () => {
 
     // Unity commandline stuff doesn't handle POSIX path semantics very well, best to use absolute paths...
@@ -43,17 +89,16 @@ gulp.task( 'export-packages', () => {
     const outputPath = path.join( projectPath, paths.outputPath );
     const packagePath = path.join( outputPath, `${paths.packagePrefix}${pkg.version}${paths.packageSuffix}` );
 
-    return exec( `/bin/echo -n "${pkg.version}" > "${versionPath}"` ) // write the version file
-    .then( () => {
+    return exec(
+        // write the version file
+        `/bin/echo -n "${pkg.version}" > "${versionPath}"`
+    ).then( () => {
         return exec( `/bin/mkdir -p "${outputPath}"` ); // Unity fails silenty if the output path doesn't exist
-    })
-    .then( () => {
-        return del( [ path.join( outputPath, '*' ) ] );
-    })
-    .then( () => {
+    }).then( () => {
+        return del( [ packagePath ] );
+    }).then( () => {
         return exec( `"${paths.unityApp}" -batchmode -nographics -silent-crashes -logFile "${logPath}" -force-free -projectPath "${projectPath}" -exportPackage "${paths.packageRoot}" "${packagePath}" -quit` );
-    })
-    .catch( err => {
+    }).catch( err => {
         console.error( `\n*** BUILD ERROR ***\n\n${err}\nSee UnityBuild.log for details.` );
         process.exit( 1 );
     });
@@ -64,4 +109,7 @@ gulp.task( 'export-packages', () => {
 gulp.task( 'preflight', ['lint'] ); // TODO tests (if we can run them outside of Unity env), coverage, docs
 
 gulp.task( 'ci', ['preflight'] ); // this is what continuous integration (e.g. Travis) runs
-gulp.task( 'build', ['preflight', 'export-packages'] );
+
+gulp.task( 'build', cb => {
+    require( 'run-sequence' )( 'preflight', 'build-libraries', 'export-packages', cb );
+});
