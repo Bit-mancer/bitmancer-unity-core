@@ -4,4 +4,4 @@ node_js:
 
 sudo: false
 
-script: npm run gulp ci
+script: npm run task ci
