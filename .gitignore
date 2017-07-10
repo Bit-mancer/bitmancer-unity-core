@@ -4,9 +4,6 @@
 .DS_Store
 .com.apple.timemachine.supported
 
-# Git
-*.orig
-
 # Logs
 UnityBuild.log
 npm-debug.log*
