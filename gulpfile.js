@@ -15,7 +15,7 @@ const paths = {
     versionFile: path.join( 'Assets', 'External Assets', 'bitmancer.me', 'Core Assets', 'VERSION' ),
     packageRoot: path.join( 'Assets', 'External Assets', 'bitmancer.me', 'Core Assets' ),
     outputPath: '_output',
-    packagePrefix: 'Bitmancer-Unity-Core-v',
+    packagePrefix: 'Bitmancer-Unity-Core',
     packageSuffix: '.unityPackage'
 };
 
@@ -87,7 +87,19 @@ gulp.task( 'export-packages', () => {
     const logPath = path.join( projectPath, 'UnityBuild.log' );
     const versionPath = path.join( projectPath, paths.versionFile );
     const outputPath = path.join( projectPath, paths.outputPath );
-    const packagePath = path.join( outputPath, `${paths.packagePrefix}${pkg.version}${paths.packageSuffix}` );
+
+    const materialsPath = path.join( paths.packageRoot, 'Materials' );
+    const meshesPath = path.join( paths.packageRoot, 'Meshes' );
+    // TODO once library is out of active dev/beta: const shadersPath = path.join( paths.packageRoot, 'Meshes' );
+    const texturesPath = path.join( paths.packageRoot, 'Textures' );
+
+    const sourcePackagePath = path.join(
+        outputPath,
+        `${paths.packagePrefix}-Source-v${pkg.version}${paths.packageSuffix}` );
+
+    const assetsPackagePath = path.join(
+        outputPath,
+        `${paths.packagePrefix}-Assets-v${pkg.version}${paths.packageSuffix}` );
 
     return exec(
         // write the version file
@@ -95,9 +107,16 @@ gulp.task( 'export-packages', () => {
     ).then( () => {
         return exec( `/bin/mkdir -p "${outputPath}"` ); // Unity fails silenty if the output path doesn't exist
     }).then( () => {
-        return del( [ packagePath ] );
+        return del( [ sourcePackagePath, assetsPackagePath ] );
     }).then( () => {
-        return exec( `"${paths.unityApp}" -batchmode -nographics -silent-crashes -logFile "${logPath}" -force-free -projectPath "${projectPath}" -exportPackage "${paths.packageRoot}" "${packagePath}" -quit` );
+        // "Source" is raw source + assets (it's refered to as "source" to distinguish from the "root" package name, "Bitmancer-Unity-Core", which is the recommended method of consuming the library)
+        // TODO consider making "source" just the source code, and leave assets in a separate package since these can likely be kept completely independent of one another
+
+        // TODO need to actually add the "root" package once the library is out of active/beta dev...
+
+        return exec( `"${paths.unityApp}" -batchmode -nographics -silent-crashes -logFile "${logPath}" -force-free -projectPath "${projectPath}" -exportPackage "${paths.packageRoot}" "${sourcePackagePath}" -quit` );
+    }).then( () => {
+        return exec( `"${paths.unityApp}" -batchmode -nographics -silent-crashes -logFile "${logPath}" -force-free -projectPath "${projectPath}" -exportPackage "${materialsPath}" "${meshesPath}" "${texturesPath}" "${assetsPackagePath}" -quit` );
     }).catch( err => {
         console.error( `\n*** BUILD ERROR ***\n\n${err}\nSee UnityBuild.log for details.` );
         process.exit( 1 );
